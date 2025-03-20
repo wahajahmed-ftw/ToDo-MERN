@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { redirect } from "react-router-dom";
 
-export default function Signup() {
+export default function Login() {
   const [formData, SetFormData] = useState({
     name: "",
     email: "",
@@ -23,13 +23,13 @@ export default function Signup() {
     console.log(formData);
     try {
       const response = await axios.post(
-        "http://localhost:8001/auth/signup",
-        formData
+        "http://localhost:8001/auth/login",
+        formData,
+        {withCredentials: true} 
       );
       if (response.status === 200) {
         console.log("Done",response);
         alert("Signup Complete");
-        redirect("/login");
       } else {
         console.log("There was a problem", response.data);
       }
@@ -39,8 +39,8 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <h1>Signup Page</h1>
+      <div>
+        <h1>Login Page</h1>
       <form onSubmit={HandleSubmit}>
         <label>Name</label>
         <input

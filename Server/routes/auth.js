@@ -4,9 +4,10 @@ const router = express.Router();
 const User = require("../models/userModal");
 const { getDB } = require("../db/connection");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 router.use(cookieParser());
-
+router.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 router.get("/", (req, res) => {
   res.send("This route is working");
 });
@@ -52,7 +53,10 @@ router.post("/login", async (req, res) => {
       );
       if (token) {
         console.log("Login Function Token", token);
-        res.cookie("token", token, { httpOnly: true });
+        res.cookie("token", token, {
+          secure: process.env.NODE_ENV === "production", 
+          sameSite: "Lax",
+        });
         res.status(200).send("User logged in successfully");
       }
     }
@@ -64,6 +68,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   try {
+    console.log("Logout Function");
     res.clearCookie("token");
     res.status(200).send("User logged out successfully");
   } catch (error) {

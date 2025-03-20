@@ -33,9 +33,19 @@ export default function Form() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8001/tasks/view");
-        const data = response.data;
-        settableData(data);
+        const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+        console.log(token);
+        const response = await axios.get("http://localhost:8001/tasks/view", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          withCredentials: true
+        });
+        console.log(response.data)
+        settableData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -90,8 +100,32 @@ export default function Form() {
       console.log("Error ho gaya", err);
     }
   };
+
+  const HandleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+      const response = await axios.post("http://localhost:8001/auth/logout", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        console.log("Done");
+        window.location.href = "/login";
+      }
+    } catch (err) {
+      console.log("Error ho gaya", err);
+    }
+  };
   return (
     <div>
+      <button onClick={HandleLogout}>Logout</button>
       <form onSubmit={HandleSubmit}>
         <input
           type="text"

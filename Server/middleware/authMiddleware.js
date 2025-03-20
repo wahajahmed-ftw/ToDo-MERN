@@ -11,7 +11,7 @@ function VerfiyToken(req, res, next) {
     const authHeader = req.headers.authorization;
     if (authHeader.startsWith("Bearer ")) {
       token = authHeader.split(" ")[1];
-      console.log("TOken", token);
+      console.log("Token", token);
     }
   }
   try {
