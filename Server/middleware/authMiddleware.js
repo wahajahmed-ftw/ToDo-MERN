@@ -6,7 +6,9 @@ const cookieParser = require("cookie-parser");
 router.use(cookieParser());
 
 function VerfiyToken(req, res, next) {
+ 
   let token = req.cookies?.token;
+  console.log("Token in cookie", token);
   if (!token && req.headers.authorization) {
     const authHeader = req.headers.authorization;
     if (authHeader.startsWith("Bearer ")) {

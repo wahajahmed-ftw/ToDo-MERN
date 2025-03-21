@@ -54,7 +54,6 @@ router.post("/login", async (req, res) => {
       if (token) {
         console.log("Login Function Token", token);
         res.cookie("token", token, {
-          secure: process.env.NODE_ENV === "production", 
           sameSite: "Lax",
         });
         res.status(200).send("User logged in successfully");

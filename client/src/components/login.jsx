@@ -29,7 +29,7 @@ export default function Login() {
       );
       if (response.status === 200) {
         console.log("Done",response);
-        alert("Signup Complete");
+        window.location.href = "/form"; 
       } else {
         console.log("There was a problem", response.data);
       }
